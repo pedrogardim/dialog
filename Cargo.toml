@@ -3,8 +3,13 @@ name = "dialog"
 version = "0.1.0"
 edition = "2021"
 
+[features]
+default = ["mini"]
+standard = ["scylla"]
+mini = ["rusqlite"]
+
 [dependencies]
 tokio = { version = "1.41.1", features = ["rt-multi-thread", "macros"] }
-rusqlite = { version = "0.32.1", features = ["bundled"] }
-scylla = "0.3.1"
+rusqlite = { version = "0.32.1", features = ["bundled"], optional = true }
+scylla = { version = "0.3.1", optional = true }
 colored = "2.0"

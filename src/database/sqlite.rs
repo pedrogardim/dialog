@@ -25,18 +25,20 @@ impl Param {
     }
 }
 
-impl DBConnection for SQLiteConnection {
-    async fn new(path: &str) -> SQLiteConnection {
+impl SQLiteConnection {
+    pub async fn new(path: &str) -> SQLiteConnection {
         log::info(&format!("Connecting to SQLite 🪶  at {}...", path));
         let conn = Connection::open(path).unwrap();
         log::success("Connected to SQLite 🪶");
         SQLiteConnection { connection: conn }
     }
+}
 
-    fn close(self) -> bool {
+impl DBConnection for SQLiteConnection {
+    fn close(self: Box<Self>) -> bool {
         match self.connection.close() {
             Ok(_) => {
-                log::success("Closed connection to SQLite");
+                log::success("Closed connection to SQLite 🚪");
                 true
             }
             Err(e) => {

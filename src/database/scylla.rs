@@ -13,8 +13,8 @@ pub struct ScyllaConnection {
     pub connection: Session,
 }
 
-impl DBConnection for ScyllaConnection {
-    async fn new(uri: &str) -> ScyllaConnection {
+impl ScyllaConnection {
+    pub async fn new(uri: &str) -> ScyllaConnection {
         loop {
             let session = SessionBuilder::new().known_node(uri).build().await;
             match session {
@@ -33,8 +33,10 @@ impl DBConnection for ScyllaConnection {
             }
         }
     }
+}
 
-    fn close(self) -> bool {
+impl DBConnection for ScyllaConnection {
+    fn close(self: Box<Self>) -> bool {
         true
     }
 
